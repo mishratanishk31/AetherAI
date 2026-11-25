@@ -1,0 +1,459 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AetherAI — Next-Gen Cognitive Assistant</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <!-- Layer 1: Ambient Mesh Glow Gradients -->
+  <div class="ambient-glow glow-1"></div>
+  <div class="ambient-glow glow-2"></div>
+  <div class="ambient-glow glow-3"></div>
+
+  <!-- Layer 2: Interactive Dynamic Particle Canvas -->
+  <canvas id="particleCanvas"></canvas>
+
+  <!-- Floating Confetti & Reaction Container -->
+  <div id="confettiContainer" class="confetti-container"></div>
+
+  <!-- App Wrapper -->
+  <div class="app-layout">
+    
+    <!-- Sidebar / Drawer: Controls, Guardrails, History, Handoff -->
+    <aside class="sidebar" id="sidebar">
+      <div class="sidebar-header">
+        <div class="brand-group">
+          <div class="brand-avatar-box">
+            <div class="avatar-ring"></div>
+            <span class="bot-face" id="botFaceIcon">🤖</span>
+            <span class="status-indicator online"></span>
+          </div>
+          <div class="brand-text">
+            <h2>AetherAI <span class="badge-pill pulse">LIVE</span></h2>
+            <p>Groq Powered Neural Agent</p>
+          </div>
+        </div>
+        <button class="icon-btn close-sidebar-btn" id="closeSidebarBtn" title="Close Drawer">✕</button>
+      </div>
+
+      <!-- Quick Considerations Banner Card -->
+      <div class="pillar-card">
+        <div class="pillar-card-header">
+          <span class="pillar-icon">🛡️</span>
+          <h3>Chatbot Guardrails & Trust</h3>
+        </div>
+        <p class="pillar-desc">Built with enterprise AI standards: Guardrails, Human Handoff, Zero-PII leak protection & Multi-model intelligence.</p>
+        <div class="pillar-status-list">
+          <div class="pillar-status-item">
+            <span class="check-icon">✓</span>
+            <span>Hallucination Filter Active</span>
+          </div>
+          <div class="pillar-status-item">
+            <span class="check-icon">✓</span>
+            <span>Real-time Human Handoff Ready</span>
+          </div>
+          <div class="pillar-status-item">
+            <span class="check-icon">✓</span>
+            <span>Client-side PII Data Masking</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Modes & Use Cases -->
+      <div class="control-section">
+        <label class="section-label">USE CASE & COMPLEXITY</label>
+        <div class="mode-grid">
+          <button class="mode-card active" data-mode="general">
+            <span class="mode-icon">🧠</span>
+            <div class="mode-meta">
+              <strong>Smart General</strong>
+              <span>Open-ended reasoning</span>
+            </div>
+          </button>
+          <button class="mode-card" data-mode="support">
+            <span class="mode-icon">💼</span>
+            <div class="mode-meta">
+              <strong>Support & Help</strong>
+              <span>Structured troubleshooting</span>
+            </div>
+          </button>
+          <button class="mode-card" data-mode="faq">
+            <span class="mode-icon">⚡</span>
+            <div class="mode-meta">
+              <strong>Fast FAQ</strong>
+              <span>Concise, direct answers</span>
+            </div>
+          </button>
+          <button class="mode-card" data-mode="creative">
+            <span class="mode-icon">🎨</span>
+            <div class="mode-meta">
+              <strong>Creative Co-pilot</strong>
+              <span>Brainstorming & stories</span>
+            </div>
+          </button>
+        </div>
+      </div>
+
+      <!-- Guardrails & Privacy Settings -->
+      <div class="control-section">
+        <label class="section-label">SECURITY & GUARDRAILS</label>
+        
+        <div class="setting-toggle-row">
+          <div class="toggle-info">
+            <span class="toggle-title">Strict Accuracy Guardrail</span>
+            <span class="toggle-sub">Reduces hallucinations, grounds replies</span>
+          </div>
+          <label class="switch">
+            <input type="checkbox" id="guardrailsToggle" checked>
+            <span class="slider round"></span>
+          </label>
+        </div>
+
+        <div class="setting-toggle-row">
+          <div class="toggle-info">
+            <span class="toggle-title">PII Data Privacy Masker</span>
+            <span class="toggle-sub">Auto-masks emails, cards & phones</span>
+          </div>
+          <label class="switch">
+            <input type="checkbox" id="piiToggle" checked>
+            <span class="slider round"></span>
+          </label>
+        </div>
+
+        <div class="setting-toggle-row">
+          <div class="toggle-info">
+            <span class="toggle-title">Interactive Sound FX</span>
+            <span class="toggle-sub">Futuristic dynamic synth audio</span>
+          </div>
+          <label class="switch">
+            <input type="checkbox" id="soundToggle" checked>
+            <span class="slider round"></span>
+          </label>
+        </div>
+      </div>
+
+      <!-- Human Handoff Quick Action -->
+      <div class="handoff-cta-card">
+        <div class="cta-content">
+          <h4>Need a Human Agent?</h4>
+          <p>Complex query or urgent issue? Transfer seamlessly to a live human support specialist.</p>
+        </div>
+        <button class="btn-handoff" id="sidebarHandoffBtn">
+          <span>👩‍💼 Request Human Handoff</span>
+        </button>
+      </div>
+
+      <!-- Model & Language Options -->
+      <div class="control-section">
+        <label class="section-label">AI MODEL & LANGUAGE</label>
+        <div class="select-wrapper">
+          <label for="modelSelect">Language Model</label>
+          <select id="modelSelect" class="custom-select">
+            <option value="openai/gpt-oss-120b" selected>OpenAI GPT-OSS 120B (Deep Reasoning)</option>
+            <option value="qwen/qwen3.8-27b">Qwen 3.8 27B (Ultra Fast)</option>
+            <option value="allam-2-7b">Allam 2 7B (Lightweight)</option>
+          </select>
+        </div>
+
+        <div class="select-wrapper">
+          <label for="languageSelect">Response Language</label>
+          <select id="languageSelect" class="custom-select">
+            <option value="English" selected>English (Global)</option>
+            <option value="Spanish">Español (Spanish)</option>
+            <option value="French">Français (French)</option>
+            <option value="German">Deutsch (German)</option>
+            <option value="Hindi">हिन्दी (Hindi)</option>
+            <option value="Japanese">日本語 (Japanese)</option>
+            <option value="Arabic">العربية (Arabic)</option>
+          </select>
+        </div>
+      </div>
+
+      <!-- API Key Setting (Foldable) -->
+      <details class="api-key-accordion" id="apiKeyDetails">
+        <summary>🔑 API Key & Config</summary>
+        <div class="accordion-content">
+          <p class="small-text">Enter your Groq API Key below (stored securely in browser localStorage):</p>
+          <div class="input-with-btn">
+            <input type="password" id="apiKeyInput" placeholder="gsk_..." value="">
+            <button class="icon-btn small" id="toggleKeyVisibility" title="Toggle visibility">👁️</button>
+          </div>
+          <button class="btn-secondary full-width" id="saveKeyBtn">Save API Key</button>
+        </div>
+      </details>
+
+      <!-- Sidebar Footer -->
+      <div class="sidebar-footer">
+        <button class="btn-ghost" id="clearChatBtn">🗑️ Clear Chat History</button>
+        <button class="btn-ghost" id="exportChatBtn">📥 Export Transcript</button>
+      </div>
+    </aside>
+
+    <!-- Main Chat Window Area -->
+    <main class="chat-viewport">
+      
+      <!-- Top Navigation Bar -->
+      <header class="top-nav">
+        <div class="nav-left">
+          <button class="icon-btn sidebar-toggle-btn" id="toggleSidebarBtn" title="Toggle Controls & Guardrails">
+            <span class="hamburger-line"></span>
+            <span class="hamburger-line"></span>
+            <span class="hamburger-line"></span>
+          </button>
+          
+          <div class="nav-brand">
+            <div class="interactive-avatar" id="avatarInteract" title="Click to poke bot!">
+              <div class="avatar-eyes">
+                <span class="eye left-eye"><span class="pupil"></span></span>
+                <span class="eye right-eye"><span class="pupil"></span></span>
+              </div>
+              <div class="avatar-smile"></div>
+            </div>
+            <div class="nav-details">
+              <div class="title-row">
+                <h1 id="chatHeaderTitle">AetherBot</h1>
+                <span class="tag-ai">AI Transparency: Groq Llama/GPT-OSS</span>
+              </div>
+              <p class="status-caption">
+                <span class="live-dot"></span> Ready &bull; Guardrails ON &bull; Human Handoff Available
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <div class="nav-actions">
+          <!-- Human Handoff Top Button -->
+          <button class="action-btn pill-btn highlight" id="topHandoffBtn" title="Transfer conversation to Human Support Agent">
+            <span class="btn-icon">👩‍💼</span>
+            <span class="btn-text">Human Agent</span>
+          </button>
+
+          <!-- Sticker Tray Toggle -->
+          <button class="action-btn pill-btn sticker-toggle" id="stickerToggleBtn" title="Open Fun Interactive Stickers">
+            <span class="btn-icon">✨</span>
+            <span class="btn-text">Stickers</span>
+          </button>
+
+          <!-- Theme Toggle -->
+          <button class="icon-btn" id="themeToggleBtn" title="Switch Theme (Dark/Cyber/Light)">
+            <span id="themeIcon">🌙</span>
+          </button>
+
+          <!-- Sound Mute Toggle -->
+          <button class="icon-btn" id="audioToggleBtn" title="Toggle Sound FX">
+            <span id="audioIcon">🔊</span>
+          </button>
+        </div>
+      </header>
+
+      <!-- Transparency & Safety Banner (Dismissible) -->
+      <div class="transparency-banner" id="transparencyBanner">
+        <div class="banner-content">
+          <span class="banner-icon">ℹ️</span>
+          <span><strong>Transparency Notice:</strong> You are conversing with an autonomous AI assistant. Facts are grounded with safety guardrails. Never submit confidential passwords or payment cards.</span>
+        </div>
+        <button class="banner-close" id="dismissBannerBtn" title="Dismiss notice">✕</button>
+      </div>
+
+      <!-- Chat Messages Scroll Container -->
+      <section class="messages-container" id="messagesContainer">
+        
+        <!-- Welcome Hero Screen -->
+        <div class="welcome-hero" id="welcomeHero">
+          <div class="hero-graphics">
+            <div class="orbiting-circle c1"></div>
+            <div class="orbiting-circle c2"></div>
+            <div class="hero-bot-avatar">
+              <span class="hero-emoji">🤖</span>
+            </div>
+          </div>
+          <h2>Hello! I'm AetherAI.</h2>
+          <p class="hero-tagline">Your intelligent, safe, and expressive conversational partner. What shall we tackle together today?</p>
+          
+          <!-- Key Pillars Badges -->
+          <div class="pillars-badge-row">
+            <div class="pill-badge" title="Grounded system instructions to prevent hallucinations">
+              <span>🛡️ Guardrails Grounded</span>
+            </div>
+            <div class="pill-badge" title="Instantly transfer to a live representative anytime">
+              <span>🤝 Human Handoff Ready</span>
+            </div>
+            <div class="pill-badge" title="Client-side redaction protects confidential data">
+              <span>🔒 Privacy Masking</span>
+            </div>
+            <div class="pill-badge" title="Transparent AI model identity and concise replies">
+              <span>💡 Clear Transparency</span>
+            </div>
+          </div>
+
+          <!-- Suggested Starter Prompts -->
+          <div class="prompt-chips-wrapper">
+            <span class="chips-title">Try one of these interactive prompts:</span>
+            <div class="prompt-chips">
+              <button class="chip" data-prompt="What are the essential best practices for deploying customer-facing AI chatbots?">
+                📋 Chatbot Best Practices
+              </button>
+              <button class="chip" data-prompt="I need troubleshooting assistance with my cloud subscription billing.">
+                💳 Support: Billing Troubleshooting
+              </button>
+              <button class="chip" data-prompt="Can you explain how human handoff and fallback safety mechanisms work in modern conversational AI?">
+                🔄 Explain Human Handoff
+              </button>
+              <button class="chip" data-prompt="Tell me a witty joke about programmers and artificial intelligence!">
+                🎭 Tell a Tech Joke
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Dynamic Message Stream List will append here -->
+        <div class="messages-list" id="messagesList"></div>
+
+        <!-- Live Typing / Thinking Indicator (Audio Wave Frequency Style) -->
+        <div class="typing-indicator-wrapper" id="typingIndicator" style="display: none;">
+          <div class="typing-avatar">🤖</div>
+          <div class="typing-bubble">
+            <div class="typing-wave">
+              <span class="wave-bar"></span>
+              <span class="wave-bar"></span>
+              <span class="wave-bar"></span>
+              <span class="wave-bar"></span>
+            </div>
+            <span class="typing-text" id="typingText">Formulating grounded response...</span>
+          </div>
+        </div>
+      </section>
+
+      <!-- Floating Interactive Sticker Drawer -->
+      <div class="sticker-drawer" id="stickerDrawer">
+        <div class="sticker-drawer-header">
+          <div class="drawer-title">
+            <span>🎨 Interactive Stickers & Reactions</span>
+            <small>Tap any sticker to send into chat!</small>
+          </div>
+          <button class="icon-btn close-drawer-btn" id="closeStickerDrawerBtn">✕</button>
+        </div>
+        <div class="sticker-tabs">
+          <button class="sticker-tab-btn active" data-tab="bots">🤖 Robots</button>
+          <button class="sticker-tab-btn" data-tab="emotions">💖 Expressions</button>
+          <button class="sticker-tab-btn" data-tab="work">🚀 Tech & Work</button>
+          <button class="sticker-tab-btn" data-tab="fun">🎉 Fun & Memes</button>
+        </div>
+        <div class="sticker-grid" id="stickerGrid">
+          <!-- Injected via JavaScript -->
+        </div>
+      </div>
+
+      <!-- Human Handoff Modal (Full Simulation & Ticket flow) -->
+      <div class="modal-backdrop" id="handoffModal" style="display: none;">
+        <div class="modal-card">
+          <div class="modal-header">
+            <div class="modal-title-group">
+              <span class="modal-badge">LIVE HANDOFF</span>
+              <h3>Connecting to Human Support Specialist</h3>
+            </div>
+            <button class="icon-btn" id="closeHandoffModalBtn">✕</button>
+          </div>
+          <div class="modal-body">
+            <div class="handoff-progress-bar">
+              <div class="progress-fill" id="handoffProgressFill"></div>
+            </div>
+            
+            <div class="handoff-status-box" id="handoffConnectingState">
+              <div class="radar-spinner"></div>
+              <h4>Analyzing Conversation Context...</h4>
+              <p>Passing chat history, detected sentiment, and security clearances to the next available specialist.</p>
+              <div class="handoff-context-summary" id="handoffContextSummary">
+                <span>Summary: Ready to transfer user request</span>
+              </div>
+            </div>
+
+            <div class="handoff-agent-card" id="handoffConnectedState" style="display: none;">
+              <div class="agent-avatar-wrap">
+                <img src="https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&w=150&q=80" alt="Support Specialist" class="agent-avatar-img">
+                <span class="agent-online-beacon"></span>
+              </div>
+              <div class="agent-profile">
+                <h4>Sarah Jenkins <span class="badge-role">Senior Support Specialist</span></h4>
+                <p class="agent-dept">Tier-2 Technical & Customer Success</p>
+                <div class="agent-status-line">🟢 Active Now &bull; Response time: &lt; 1 min</div>
+              </div>
+            </div>
+
+            <div class="ticket-meta-info" id="ticketMetaInfo" style="display: none;">
+              <div class="ticket-row">
+                <span>Ticket ID:</span>
+                <strong id="ticketIdText">#TK-8942-HUMAN</strong>
+              </div>
+              <div class="ticket-row">
+                <span>Priority:</span>
+                <span class="badge-priority">Elevated</span>
+              </div>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button class="btn-secondary" id="cancelHandoffBtn">Return to AI Chat</button>
+            <button class="btn-primary" id="confirmTransferBtn">Start Live Conversation</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Chat Bottom Input Bar -->
+      <footer class="chat-input-area">
+        
+        <!-- PII Redaction Warning Toast (when triggered) -->
+        <div class="pii-alert-pill" id="piiAlertPill" style="display: none;">
+          <span class="shield-icon">🛡️</span>
+          <span>PII Masking Active: Sensitive information protected before dispatch!</span>
+        </div>
+
+        <div class="input-form-container">
+          <!-- Open Sticker Tray Button -->
+          <button class="icon-btn tool-btn sticker-btn" id="inputStickerBtn" title="Send a Sticker">
+            <span>🎭</span>
+          </button>
+
+          <!-- Voice Input Button (Speech-to-Text) -->
+          <button class="icon-btn tool-btn voice-btn" id="voiceInputBtn" title="Voice Dictation (Speech to Text)">
+            <span id="voiceMicIcon">🎙️</span>
+          </button>
+
+          <!-- Main Input Textarea -->
+          <div class="textarea-wrapper">
+            <textarea 
+              id="chatTextarea" 
+              placeholder="Ask anything, type a message, or try a prompt above..." 
+              rows="1" 
+              maxlength="2000"
+            ></textarea>
+            <span class="char-counter" id="charCounter">0/2000</span>
+          </div>
+
+          <!-- Quick Action Buttons -->
+          <div class="input-actions-right">
+            <button class="icon-btn send-btn" id="sendMessageBtn" title="Send message (Enter)">
+              <svg class="send-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                <line x1="22" y1="2" x2="11" y2="13"></line>
+                <polygon points="22 2 15 22 11 13 2 9 22 2"></polygon>
+              </svg>
+            </button>
+          </div>
+        </div>
+
+        <!-- Privacy & Ethics Footer Disclaimer -->
+        <div class="input-bottom-disclaimer">
+          <span>AetherAI respects privacy. Data is strictly processed client-side. Hallucinations can occur; verify critical facts.</span>
+        </div>
+      </footer>
+
+    </main>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>
